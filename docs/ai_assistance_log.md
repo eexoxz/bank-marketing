@@ -1,0 +1,16 @@
+# AI Assistance Record
+
+| Date | Tool | Assistance | Student review |
+|---|---|---|---|
+| 3 October 2026 | OpenAI Codex | Inspected assignment requirements and local tools; suggested dataset and experimental design; generated environment setup, starter code, notebook and initial audit | Pending: read the code, verify findings and explain decisions in your own words |
+| 5 October 2026 | OpenAI Codex | Mapped the supplied rubric to a 5,000-word report structure; generated section prompts, result placeholders and an evidence completion guide | Pending: adapt the structure, verify citations, and write and check the final interpretation |
+| 30 October 2026 | OpenAI Codex | Reviewed the requested writing-style chat; drafted supported opening sections; checked academic publication records; added development diagnostics, a feature audit and session notes | Pending: review the prose, read the cited sources, verify interpretations, and complete the remaining modelling work |
+| 30 October 2026 | OpenAI Codex | Converted the report draft to Word and PDF; combined the outline and completion guide in Word; checked page renders and replaced report Markdown files | Pending: review the editable Word draft and continue the remaining experiments |
+| 6 November 2026 | OpenAI Codex | Revised selected report passages using the supplied writing guidance, checked existing development scores, and verified the updated Word and PDF | Pending: read the revised wording and confirm it reflects your own understanding |
+| 6 November 2026 | OpenAI Codex | Formatted the coursework report with a cover, automatic contents, numbered headings and APA-style tables and figures; moved drafting prompts into separate Word notes and verified the PDF | Pending: fill in the cover details and complete the remaining experiments and report sections |
+| 6 November 2026 | OpenAI Codex | Implemented and ran the preprocessing comparisons, three model searches, soft-voting ensemble and frozen holdout evaluation. Prepared the reproducible notebook, cleaned CSV, draft report results and an editable presentation. | Pending: reproduce the work, verify the interpretation and disclose the assistance in the final report. |
+| 6 November 2026 | OpenAI Codex | Cross-checked the rubric, verified sources, expanded the Word draft, ran descriptive duplicate and call-budget checks, redrew the figures in monochrome, updated the slides and prepared the technical package. | Pending: student review, independent authorship and disclosure checks. |
+| 6 November 2026 | OpenAI Codex | Reviewed the Python and notebooks, clarified the prior-contact indicator, added integrity and recovery checks, and reran the experiment from the raw archive. | Pending: student review and explanation of the implementation in the viva. |
+| 7 November 2026 | OpenAI Codex | Reviewed repeat-run behavior, verified result recovery and tested the Windows environment setup and notebooks. | Review the code and explain the workflow during the viva. |
+
+Keep this record current with actual assistance used. The supplied brief asks students to declare AI use and describes the report as Amber. This log supports an accurate disclosure; it does not measure or certify a Turnitin AI percentage. The student should write and verify the final interpretation and be ready to explain the implementation in the viva.

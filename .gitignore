@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+/models/
+.jupyter-runtime/
+.bank-experiment.lock
+
+# Generated outputs and local coursework files
+/data/processed/
+/results/
+/report/
+/slides/
+/docs/writing_style.md

@@ -1,0 +1,2 @@
+# Preserve exact UCI bytes for the source-manifest checksum.
+data/raw/** -text
