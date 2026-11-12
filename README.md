@@ -13,7 +13,7 @@ Install 64-bit Python 3.12. From the repository root in PowerShell:
 .\run.ps1 -Mode notebook
 ```
 
-If Python 3.12 is available as `python` and you do not have the Windows Python launcher, use `.\setup.ps1 -PythonCommand python`. In VS Code, select `.venv\Scripts\python.exe` as the notebook kernel.
+Setup checks `python` on your PATH and falls back to the Windows Python launcher. To select a specific Python 3.12 interpreter, pass its path with `-PythonCommand`. In VS Code, select `.venv\Scripts\python.exe` as the notebook kernel.
 
 1. Open `notebooks/01_data_audit_and_baseline.ipynb` for data provenance, exploratory analysis and the initial baseline.
 2. Open `notebooks/02_model_experiments.ipynb` for preprocessing, tuning, the reserved holdout and the additional checks.

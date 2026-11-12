@@ -1,10 +1,22 @@
-param([string]$PythonCommand = 'py', [switch]$UseExistingEnvironment)
+param([string]$PythonCommand, [switch]$UseExistingEnvironment)
 $ErrorActionPreference = 'Stop'
 Set-Location -LiteralPath $PSScriptRoot
 if (-not $UseExistingEnvironment) {
+    $versionCheck = 'import sys; sys.exit(sys.version_info[:2] != (3, 12) or sys.maxsize < 2**32)'
+    if (-not $PythonCommand) {
+        $PythonCommand = 'py'
+        $pathPython = Get-Command python.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($pathPython) {
+            & $pathPython.Source -c $versionCheck
+            if ($LASTEXITCODE -eq 0) { $PythonCommand = $pathPython.Source }
+        }
+    }
     $pythonArgs = if ($PythonCommand -eq 'py') { @('-3.12') } else { @() }
-    & $PythonCommand @pythonArgs -c 'import sys; sys.exit(sys.version_info[:2] != (3, 12) or sys.maxsize < 2**32)'
-    if ($LASTEXITCODE -ne 0) { throw 'The pinned environment requires 64-bit Python 3.12.' }
+    if (-not (Get-Command $PythonCommand -ErrorAction SilentlyContinue)) {
+        throw 'Install 64-bit Python 3.12 or pass its executable path with -PythonCommand.'
+    }
+    & $PythonCommand @pythonArgs -c $versionCheck
+    if ($LASTEXITCODE -ne 0) { throw 'The pinned environment requires 64-bit Python 3.12. Specify it with -PythonCommand if needed.' }
     & $PythonCommand @pythonArgs -m venv .venv
     if ($LASTEXITCODE -ne 0) { throw 'Could not create the project environment.' }
 }
