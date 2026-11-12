@@ -1,0 +1,4 @@
+fold,train_rows,validation_rows,train_last_source_row,validation_first_source_row,validation_positive_rate
+1,8235,8235,8235,8236,0.054280510018214934
+2,16470,8235,16472,16473,0.058530661809350334
+3,24705,8235,24711,24712,0.11074681238615665

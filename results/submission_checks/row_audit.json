@@ -1,0 +1,7 @@
+{
+  "holdout_exact_duplicates_within": 2,
+  "holdout_exact_matches_in_development": 0,
+  "unique_development_feature_profiles": 12526,
+  "mixed_label_feature_profiles": 1184,
+  "rows_in_mixed_label_profiles": 10470
+}

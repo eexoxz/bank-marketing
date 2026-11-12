@@ -1,0 +1,26 @@
+{
+  "raw_rows": 41188,
+  "raw_input_features": 20,
+  "development_raw_rows": 32950,
+  "development_clean_rows": 32940,
+  "development_exact_duplicates_removed": 10,
+  "test_start_source_row": 32950,
+  "reserved_test_rows": 8238,
+  "split_policy": "First 80% development; last 20% final holdout; source order preserved.",
+  "holdout_evaluated": false,
+  "development_positive_rate": 0.06375227686703097,
+  "development_target_counts": {
+    "no": 30840,
+    "yes": 2100
+  },
+  "development_unknown_counts": {
+    "job": 266,
+    "marital": 62,
+    "education": 1321,
+    "default": 8016,
+    "housing": 781,
+    "loan": 781
+  },
+  "development_literal_nulls": 0,
+  "pdays_unrecorded_interval_code": 999
+}

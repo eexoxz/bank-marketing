@@ -1,0 +1,279 @@
+{
+  "prepared_on": "2026-11-06",
+  "raw_sha256": "74adfc578bf77a7ff4bb1ba4a9f8709d9e3c6907342959c2c8416847e0afb4d8",
+  "scope": "First 32950 source rows only; 10 exact duplicates removed before fold diagnostics.",
+  "holdout_evaluated": false,
+  "model_fitted": false,
+  "raw_rows": 41188,
+  "raw_input_features": 20,
+  "original_numeric_input_features": 10,
+  "original_categorical_input_features": 10,
+  "development_rows": 32940,
+  "development_positive_count": 2100,
+  "development_positive_rate": 0.06375227686703097,
+  "unknowns": {
+    "job": {
+      "count": 266,
+      "percent": 0.8075288403157256
+    },
+    "marital": {
+      "count": 62,
+      "percent": 0.18822100789313903
+    },
+    "education": {
+      "count": 1321,
+      "percent": 4.010321797207043
+    },
+    "default": {
+      "count": 8016,
+      "percent": 24.335154826958107
+    },
+    "housing": {
+      "count": 781,
+      "percent": 2.370977534911961
+    },
+    "loan": {
+      "count": 781,
+      "percent": 2.370977534911961
+    }
+  },
+  "numeric_summary": {
+    "age": {
+      "median": 39.0,
+      "min": 18.0,
+      "max": 95.0,
+      "skewness": 0.4762129720505999
+    },
+    "duration": {
+      "median": 175.0,
+      "min": 0.0,
+      "max": 4918.0,
+      "skewness": 3.3192437065118647
+    },
+    "campaign": {
+      "median": 2.0,
+      "min": 1.0,
+      "max": 56.0,
+      "skewness": 4.649121039611568
+    },
+    "pdays": {
+      "median": 999.0,
+      "min": 0.0,
+      "max": 999.0,
+      "skewness": -13.650616803512575
+    },
+    "previous": {
+      "median": 0.0,
+      "min": 0.0,
+      "max": 3.0,
+      "skewness": 3.866143746806906
+    },
+    "emp.var.rate": {
+      "median": 1.1,
+      "min": -1.8,
+      "max": 1.4,
+      "skewness": -1.3875919624532382
+    },
+    "cons.price.idx": {
+      "median": 93.918,
+      "min": 92.756,
+      "max": 94.465,
+      "skewness": -0.14235844873122414
+    },
+    "cons.conf.idx": {
+      "median": -41.8,
+      "min": -50.0,
+      "max": -36.1,
+      "skewness": -0.17364040064060174
+    },
+    "euribor3m": {
+      "median": 4.864,
+      "min": 1.299,
+      "max": 5.045,
+      "skewness": -1.7191864854083165
+    },
+    "nr.employed": {
+      "median": 5195.8,
+      "min": 5099.1,
+      "max": 5228.1,
+      "skewness": -1.3719030484132253
+    }
+  },
+  "pdays_unrecorded_interval_count": 32766,
+  "pdays_recorded_contact_count": 174,
+  "pdays_recorded_contact_median": 5.0,
+  "unrecognised_categories": {
+    "job": [],
+    "marital": [],
+    "education": [],
+    "default": [],
+    "housing": [],
+    "loan": [],
+    "contact": [],
+    "month": [],
+    "day_of_week": [],
+    "poutcome": []
+  },
+  "outer_whitespace_counts": {
+    "job": 0,
+    "marital": 0,
+    "education": 0,
+    "default": 0,
+    "housing": 0,
+    "loan": 0,
+    "contact": 0,
+    "month": 0,
+    "day_of_week": 0,
+    "poutcome": 0
+  },
+  "basic_domain_check_counts": {
+    "age_nonpositive": 0,
+    "campaign_below_one": 0,
+    "previous_negative": 0,
+    "pdays_negative": 0,
+    "previous_zero_with_existing_outcome": 0,
+    "recorded_pdays_with_previous_zero": 0,
+    "pdays_999_with_previous_positive_for_review": 2101
+  },
+  "strong_numeric_correlations": [
+    {
+      "feature_1": "emp.var.rate",
+      "feature_2": "euribor3m",
+      "pearson_r": 0.9776189326193387
+    },
+    {
+      "feature_1": "emp.var.rate",
+      "feature_2": "nr.employed",
+      "pearson_r": 0.9463943354920665
+    },
+    {
+      "feature_1": "euribor3m",
+      "feature_2": "nr.employed",
+      "pearson_r": 0.9515227113723808
+    }
+  ],
+  "folds": [
+    {
+      "fold": 1,
+      "train_rows": 8235,
+      "validation_rows": 8235,
+      "train_last_source_row": 8235,
+      "validation_first_source_row": 8236,
+      "validation_last_source_row": 16472,
+      "train_positive_rate": 0.03145112325440194,
+      "validation_positive_rate": 0.054280510018214934,
+      "numeric_constant_in_training": [
+        "pdays",
+        "previous"
+      ],
+      "validation_values_outside_training_range_percent": {
+        "age": 0.024286581663630846,
+        "campaign": 0.0,
+        "previous": 0.0,
+        "emp.var.rate": 0.0,
+        "cons.price.idx": 52.629022465088035,
+        "cons.conf.idx": 52.629022465088035,
+        "euribor3m": 93.86763812993321,
+        "nr.employed": 0.0
+      },
+      "categorical_values_not_seen_in_training": {
+        "job": [],
+        "marital": [],
+        "education": [],
+        "default": [],
+        "housing": [],
+        "loan": [],
+        "contact": [
+          "cellular"
+        ],
+        "month": [
+          "jul"
+        ],
+        "day_of_week": [],
+        "poutcome": []
+      }
+    },
+    {
+      "fold": 2,
+      "train_rows": 16470,
+      "validation_rows": 8235,
+      "train_last_source_row": 16472,
+      "validation_first_source_row": 16473,
+      "validation_last_source_row": 24711,
+      "train_positive_rate": 0.04286581663630844,
+      "validation_positive_rate": 0.058530661809350334,
+      "numeric_constant_in_training": [
+        "pdays",
+        "previous"
+      ],
+      "validation_values_outside_training_range_percent": {
+        "age": 0.012143290831815423,
+        "campaign": 0.0,
+        "previous": 1.5786278081360048,
+        "emp.var.rate": 8.682452944748027,
+        "cons.price.idx": 71.49969641772921,
+        "cons.conf.idx": 62.817243472981176,
+        "euribor3m": 22.343655130540377,
+        "nr.employed": 0.0
+      },
+      "categorical_values_not_seen_in_training": {
+        "job": [],
+        "marital": [],
+        "education": [],
+        "default": [
+          "yes"
+        ],
+        "housing": [],
+        "loan": [],
+        "contact": [],
+        "month": [
+          "aug",
+          "nov",
+          "oct"
+        ],
+        "day_of_week": [],
+        "poutcome": [
+          "failure",
+          "success"
+        ]
+      }
+    },
+    {
+      "fold": 3,
+      "train_rows": 24705,
+      "validation_rows": 8235,
+      "train_last_source_row": 24711,
+      "validation_first_source_row": 24712,
+      "validation_last_source_row": 32949,
+      "train_positive_rate": 0.048087431693989074,
+      "validation_positive_rate": 0.11074681238615665,
+      "numeric_constant_in_training": [],
+      "validation_values_outside_training_range_percent": {
+        "age": 1.5664845173041893,
+        "campaign": 0.0,
+        "previous": 1.493624772313297,
+        "emp.var.rate": 63.97085610200365,
+        "cons.price.idx": 63.97085610200365,
+        "cons.conf.idx": 63.97085610200365,
+        "euribor3m": 99.75713418336369,
+        "nr.employed": 63.97085610200365
+      },
+      "categorical_values_not_seen_in_training": {
+        "job": [],
+        "marital": [],
+        "education": [],
+        "default": [],
+        "housing": [],
+        "loan": [],
+        "contact": [],
+        "month": [
+          "apr",
+          "dec",
+          "mar"
+        ],
+        "day_of_week": [],
+        "poutcome": []
+      }
+    }
+  ]
+}

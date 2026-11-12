@@ -1,0 +1,17 @@
+{
+  "protocol_sha256": "a6385978e6cd4069caeff20ebabda6bba0f71b220ceb9aa15364a398981e19c5",
+  "files": {
+    "results/model_experiments/folds.csv": "68136338c28ad555f02a690e19936ba0bbd22a64574825582a2ad4055e7ac3df",
+    "results/model_experiments/preprocessing_folds.csv": "26a79ac6aa210a4a907593172fef59aac16601aaa1b3d762c10381f0ff6a0385",
+    "results/model_experiments/preprocessing_summary.csv": "19886dae574e939bcea37108134e2fd92e6879820d0c91c0ea7ee169bd45584e",
+    "results/model_experiments/baseline_folds.csv": "40022faa4923938f9d15d5d6f313018a13d101524e38b64329bc20d480b0f28d",
+    "results/model_experiments/tuning_folds.csv": "1a17596f570ea4f72496126f0e397e846960d5f7a44749cb5a21ce244bfd2ae6",
+    "results/model_experiments/tuned_and_ensemble_folds.csv": "b38dc93a3c7a6da374727c76ca2c7cc3d427fda173cf04c0cd232fc9db8bb863",
+    "results/model_experiments/development_summary.csv": "4567f3b37052b2778bdbb05eae38aa15856b3a10b23907234094df0f4bc00716",
+    "results/model_experiments/holdout_metrics.csv": "beb2f5d2374a4e4d005b1588609935c279c7a2b7a7da8f2ae2e21a438304bfef",
+    "results/model_experiments/holdout_predictions.csv": "1da799d152b02502cafba80b5149f9644e8749c12885626af625b6292b62601b",
+    "results/model_experiments/holdout_block_sensitivity.csv": "d78586cec54c0595e84c2ed18c4e6e3ab35203e8bfae63c2564a02092249d822",
+    "results/model_experiments/holdout_precision_recall.png": "888ead9cdd28886b9b75cd268bf16dc5b1e42bed47b155d04f873bb19ee1c3a9",
+    "data/processed/bank_marketing_cleaned.csv": "81972c8ff5d9332a5068da8cf2b616c7bcb630d6cc3ecb71265ebf63fbf12f96"
+  }
+}

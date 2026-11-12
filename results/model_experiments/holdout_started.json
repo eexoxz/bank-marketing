@@ -1,0 +1,6 @@
+{
+  "protocol_sha256": "a6385978e6cd4069caeff20ebabda6bba0f71b220ceb9aa15364a398981e19c5",
+  "first_test_row": 32950,
+  "test_rows": 8238,
+  "output_receipt_required": true
+}

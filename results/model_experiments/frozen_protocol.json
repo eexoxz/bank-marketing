@@ -1,0 +1,88 @@
+{
+  "raw_sha256": "74adfc578bf77a7ff4bb1ba4a9f8709d9e3c6907342959c2c8416847e0afb4d8",
+  "source_rows": 41188,
+  "holdout_boundary": 32950,
+  "development_rows": 32940,
+  "profile": "precall_no_interval",
+  "features": [
+    "age",
+    "job",
+    "marital",
+    "education",
+    "default",
+    "housing",
+    "loan",
+    "previous",
+    "poutcome"
+  ],
+  "candidates": {
+    "logistic_regression": {
+      "C": 10.0,
+      "class_weight": "balanced"
+    },
+    "decision_tree": {
+      "class_weight": null,
+      "max_depth": 6,
+      "min_samples_leaf": 100
+    },
+    "knn": {
+      "n_neighbors": 101,
+      "weights": "uniform"
+    }
+  },
+  "ranking": [
+    "logistic_regression",
+    "decision_tree",
+    "knn"
+  ],
+  "ensemble_members": [
+    "logistic_regression",
+    "decision_tree"
+  ],
+  "excluded_model": "knn",
+  "ensemble_weights": [
+    1,
+    1
+  ],
+  "threshold": 0.5,
+  "threshold_rule": "positive when score strictly greater than threshold",
+  "selection_metric": "unweighted mean fold average precision",
+  "model_manifest": {
+    "dummy_prior": {
+      "file": "dummy_prior.joblib",
+      "sha256": "39e0a0839c89671110ce181bdd03a6e2b3e38e2bd11d70e9af0b4491df8e4a2d",
+      "bytes": 555,
+      "development_refit_seconds": 0.0023437999770976603
+    },
+    "logistic_regression": {
+      "file": "logistic_regression.joblib",
+      "sha256": "06bf5e6b1076e4d7ff04b0a86cdc9b02cd55c365673a2a0d1094ee7df01730e0",
+      "bytes": 2432,
+      "development_refit_seconds": 0.35711559996707365
+    },
+    "decision_tree": {
+      "file": "decision_tree.joblib",
+      "sha256": "3c14c927c456c29a5554b6fffe14aec3ec4b6ec1b4633a701a8aac619d2c5497",
+      "bytes": 3116,
+      "development_refit_seconds": 0.22458320000441745
+    },
+    "knn": {
+      "file": "knn.joblib",
+      "sha256": "601388104921ad1ade523da0c16445770071e62cab07eceafb03b02a7664db16",
+      "bytes": 459116,
+      "development_refit_seconds": 0.11011750000761822
+    },
+    "soft_voting": {
+      "file": "soft_voting.joblib",
+      "sha256": "ceb2f5b5b33ce8ade3e7b8c471065625a8258e5b1b5c115f3987c97229c5859e",
+      "bytes": 4527,
+      "development_refit_seconds": 0.5786828999989666
+    }
+  },
+  "seed": 42,
+  "threads": 3,
+  "python": "3.12.14",
+  "sklearn": "1.9.1",
+  "numpy": "2.5.3",
+  "pandas": "3.0.6"
+}
