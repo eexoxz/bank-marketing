@@ -1,4 +1,5 @@
 """Reproduce descriptive checks for the report without changing the frozen model."""
+
 import argparse
 import json
 from pathlib import Path
@@ -10,31 +11,60 @@ from sklearn.metrics import average_precision_score
 from threadpoolctl import threadpool_limits
 
 from bank_data import BOUNDARY, sha, source, write_json
-from bank_experiments import RESULTS, THREADS, features, make_model, positive, read_verified_holdout, single_run, target
-
+from bank_experiments import (
+    RESULTS,
+    THREADS,
+    features,
+    make_model,
+    positive,
+    read_verified_holdout,
+    single_run,
+    target,
+)
 
 CHECKS = Path('results/submission_checks')
-CHECK_FILES = ('call_budget_sensitivity.csv', 'training_duplicate_sensitivity.csv', 'row_audit.json')
-CHECK_INPUTS = ('frozen_protocol.json', 'folds.csv', 'tuned_and_ensemble_folds.csv', 'holdout_predictions.csv')
+CHECK_FILES = (
+    'call_budget_sensitivity.csv',
+    'training_duplicate_sensitivity.csv',
+    'row_audit.json',
+)
+CHECK_INPUTS = (
+    'frozen_protocol.json',
+    'folds.csv',
+    'tuned_and_ensemble_folds.csv',
+    'holdout_predictions.csv',
+)
 CHECK_SCHEMA_VERSION = 1
 
 
 def evaluate_budget(predictions, models):
-    y = predictions.y.to_numpy()
-    prevalence = y.mean()
+    """Average subscriber yield over ties at each fixed call budget."""
+    outcomes = predictions.y.to_numpy()
+    prevalence = outcomes.mean()
     rows = []
     for budget in (0.10, 0.20):
-        k = int(len(y) * budget)
+        call_count = int(len(outcomes) * budget)
         for model in models:
-            score = predictions[model].to_numpy()
-            boundary = np.partition(score, len(y) - k)[len(y) - k]
-            above, tied = score > boundary, score == boundary
-            slots = k - above.sum()
-            subscribers = float(y[above].sum() + slots * y[tied].mean())
-            rows.append({'call_share': budget, 'calls': k, 'model': model,
-                         'expected_subscribers': subscribers, 'precision_at_budget': subscribers / k,
-                         'recall_at_budget': subscribers / y.sum(), 'lift': subscribers / (k * prevalence),
-                         'boundary_ties': int(tied.sum()), 'slots_at_boundary': int(slots)})
+            scores = predictions[model].to_numpy()
+            boundary = np.partition(scores, len(outcomes) - call_count)[len(outcomes) - call_count]
+            above_boundary, at_boundary = scores > boundary, scores == boundary
+            remaining_calls = call_count - above_boundary.sum()
+            expected_subscribers = float(
+                outcomes[above_boundary].sum() + remaining_calls * outcomes[at_boundary].mean()
+            )
+            rows.append(
+                {
+                    'call_share': budget,
+                    'calls': call_count,
+                    'model': model,
+                    'expected_subscribers': expected_subscribers,
+                    'precision_at_budget': expected_subscribers / call_count,
+                    'recall_at_budget': expected_subscribers / outcomes.sum(),
+                    'lift': expected_subscribers / (call_count * prevalence),
+                    'boundary_ties': int(at_boundary.sum()),
+                    'slots_at_boundary': int(remaining_calls),
+                }
+            )
     return pd.DataFrame(rows)
 
 
@@ -50,8 +80,11 @@ def checks(root, *, reuse=False):
             saved = json.loads(receipt.read_text(encoding='utf-8'))
         except (json.JSONDecodeError, UnicodeDecodeError):
             saved = None
-        expected = {'schema_version': CHECK_SCHEMA_VERSION, 'inputs': inputs,
-                    'outputs': {name: sha(output / name) for name in CHECK_FILES}}
+        expected = {
+            'schema_version': CHECK_SCHEMA_VERSION,
+            'inputs': inputs,
+            'outputs': {name: sha(output / name) for name in CHECK_FILES},
+        }
         if saved == expected:
             print('Saved descriptive checks verified.', flush=True)
             return
@@ -63,12 +96,19 @@ def checks(root, *, reuse=False):
     holdout = raw.iloc[BOUNDARY:]
     matched = holdout.merge(cleaned, how='inner', on=list(raw.columns))
     predictors = features(cleaned, protocol['profile'])
-    group = predictors.assign(y=target(cleaned)).groupby(list(predictors.columns)).y.agg(['size', 'nunique'])
-    mixed = group[group['nunique'] > 1]
-    summary = {'holdout_exact_duplicates_within': int(holdout.duplicated().sum()),
-               'holdout_exact_matches_in_development': len(matched),
-               'unique_development_feature_profiles': len(group),
-               'mixed_label_feature_profiles': len(mixed), 'rows_in_mixed_label_profiles': int(mixed['size'].sum())}
+    profile_groups = (
+        predictors.assign(y=target(cleaned))
+        .groupby(list(predictors.columns))
+        .y.agg(['size', 'nunique'])
+    )
+    mixed_profiles = profile_groups[profile_groups['nunique'] > 1]
+    summary = {
+        'holdout_exact_duplicates_within': int(holdout.duplicated().sum()),
+        'holdout_exact_matches_in_development': len(matched),
+        'unique_development_feature_profiles': len(profile_groups),
+        'mixed_label_feature_profiles': len(mixed_profiles),
+        'rows_in_mixed_label_profiles': int(mixed_profiles['size'].sum()),
+    }
 
     fold_rows = pd.read_csv(result / 'folds.csv')
     duplicate_checks = []
@@ -76,19 +116,42 @@ def checks(root, *, reuse=False):
     for fold in fold_rows.itertuples(index=False):
         split = fold.validation_first_source_row
         training = development.iloc[:split]
-        validation = cleaned.loc[cleaned.index >= split].iloc[:fold.validation_rows]
+        validation = cleaned.loc[cleaned.index >= split].iloc[: fold.validation_rows]
         assert len(validation) == fold.validation_rows
-        xval, yval = features(validation, profile), target(validation)
-        for name, train in [('retained', training), ('removed', training.drop_duplicates())]:
-            x, y = features(train, profile), target(train)
-            model = make_model('logistic_regression', protocol['candidates']['logistic_regression'], x)
-            model.fit(x, y)
-            duplicate_checks.append({'fold': fold.fold, 'training_duplicates': name, 'training_rows': len(train),
-                                     'average_precision': average_precision_score(yval, positive(model, xval))})
+        validation_features, validation_target = features(validation, profile), target(validation)
+        for name, training_rows in [
+            ('retained', training),
+            ('removed', training.drop_duplicates()),
+        ]:
+            training_features, training_target = features(training_rows, profile), target(
+                training_rows
+            )
+            model = make_model(
+                'logistic_regression',
+                protocol['candidates']['logistic_regression'],
+                training_features,
+            )
+            model.fit(training_features, training_target)
+            duplicate_checks.append(
+                {
+                    'fold': fold.fold,
+                    'training_duplicates': name,
+                    'training_rows': len(training_rows),
+                    'average_precision': average_precision_score(
+                        validation_target, positive(model, validation_features)
+                    ),
+                }
+            )
     audit = pd.DataFrame(duplicate_checks)
-    expected = pd.read_csv(result / 'tuned_and_ensemble_folds.csv').query("model == 'logistic_regression'")
-    np.testing.assert_allclose(audit.query("training_duplicates == 'removed'").average_precision,
-                               expected.average_precision, atol=1e-12, rtol=0)
+    expected = pd.read_csv(result / 'tuned_and_ensemble_folds.csv').query(
+        "model == 'logistic_regression'"
+    )
+    np.testing.assert_allclose(
+        audit.query("training_duplicates == 'removed'").average_precision,
+        expected.average_precision,
+        atol=1e-12,
+        rtol=0,
+    )
 
     np.testing.assert_array_equal(predictions.source_row, holdout.index)
     np.testing.assert_array_equal(predictions.y, target(holdout))
@@ -101,8 +164,14 @@ def checks(root, *, reuse=False):
         write_json(staged / 'row_audit.json', summary)
         for path in staged.iterdir():
             path.replace(output / path.name)
-    write_json(receipt, {'schema_version': CHECK_SCHEMA_VERSION, 'inputs': inputs,
-                         'outputs': {name: sha(output / name) for name in CHECK_FILES}})
+    write_json(
+        receipt,
+        {
+            'schema_version': CHECK_SCHEMA_VERSION,
+            'inputs': inputs,
+            'outputs': {name: sha(output / name) for name in CHECK_FILES},
+        },
+    )
     print(pd.Series(summary).to_string())
     print(audit.to_string(index=False))
     print(budget.to_string(index=False))
