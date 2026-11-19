@@ -356,7 +356,6 @@ def develop(root):
             candidates.insert(0, BASE[name])
         best_average_precision = -1.0
         for i, parameters in enumerate(candidates, 1):
-            # A baseline combination is reused when the grid contains it.
             candidate_folds = (
                 fold_results
                 if parameters == BASE[name]

@@ -49,7 +49,6 @@ def development_data(raw: pd.DataFrame, *, source_rows: int | None = None) -> tu
     boundary = int(source_rows * 0.8)
     development = raw.iloc[:boundary].copy()
     duplicates = int(development.duplicated().sum())
-    # Preliminary policy: remove only exact raw-row duplicates, preserving order.
     # Same engineered features do not establish that two clients are identical.
     development = development.drop_duplicates(keep='first').copy()
     development['source_row'] = development.index
@@ -70,7 +69,6 @@ def development_data(raw: pd.DataFrame, *, source_rows: int | None = None) -> tu
 def build_features(development: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     target = development['y'].map({'no': 0, 'yes': 1}).astype(int)
     features = development.drop(columns=['y', 'duration', 'source_row']).copy()
-    # Domain-defined transformation; no parameters are learned from the full data.
     features['pdays_recorded'] = (features['pdays'] != 999).astype(int)
     features['pdays'] = features['pdays'].replace(999, np.nan)
     return features, target
@@ -202,7 +200,6 @@ def run() -> dict:
     processed = ROOT / 'data' / 'processed'
     processed.mkdir(parents=True, exist_ok=True)
     features, target = build_features(development)
-    # This is development data only; learned imputation/scaling stays in the pipeline.
     cleaned = features.copy()
     cleaned['y'] = target
     cleaned.index.name = 'source_row'
